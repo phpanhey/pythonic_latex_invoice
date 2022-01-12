@@ -43,27 +43,29 @@ def populate_latex_src(config):
     content = (
         content.replace("#bank_details#", config["bank_details"])
         .replace("#homepage#", config["homepage"])
-        .replace("#my_name#", get_my_name(config))
+        .replace("#my_name#", get_my_name(config["address"]))
         .replace("#email#", config["email"])
         .replace("#phone#", config["phone"])
         .replace("#address#", make_latex_string(config["address"]))
-        .replace("#client_name#", get_client_name(config))        
-        .replace("#client_address#", make_latex_string(config["client_address"]))        
+        .replace("#client_name#", get_client_name(config["client_address"]))
+        .replace("#client_address#", make_latex_string(config["client_address"]))
         .replace("#letter_opening#", config["letter_opening"])
         .replace("#letter_closing#", config["letter_closing"])
         .replace("#id#", str(uuid.uuid4())[:4])
         .replace("#due_date#", get_due_date())
         .replace("#current_date#", date.today().strftime("%d.%m.%Y"))
+        .replace("#work_realized#", get_work_realized(config["work_realized"]))
+        .replace("#payment_sum#", calculate_sum(config["work_realized"]))
     )
     return content
 
 
-def get_client_name(config):
-    return config["client_address"][0]
+def get_client_name(client_address):
+    return client_address[0]
 
 
-def get_my_name(config):
-    return config["address"][0]
+def get_my_name(address):
+    return address[0]
 
 
 def get_due_date():
@@ -75,6 +77,26 @@ def make_latex_string(arr):
     for item in arr:
         res += f"{item}\\\\"
     return res
+
+
+def get_work_realized(work_realized):
+    res = ""
+    for item in work_realized:
+        description = item["description"]
+        payment = item["payment"]
+        res += f"{description}& {payment} €\\\\"
+    res += "~&~\\\\"
+    sum = calculate_sum(work_realized)
+    res += f"SUMME & \\textbf{sum} €\\\\"
+    return res
+
+
+def calculate_sum(work_realized):
+    sum = 0
+    for item in work_realized:
+        sum+=int(item["payment"])
+    return str(sum)
+
 
 
 def create_populated_latex_file(content, config):
