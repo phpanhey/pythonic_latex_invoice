@@ -94,9 +94,8 @@ def get_work_realized(work_realized):
 def calculate_sum(work_realized):
     sum = 0
     for item in work_realized:
-        sum+=int(item["payment"])
+        sum += int(item["payment"])
     return str(sum)
-
 
 
 def create_populated_latex_file(content, config):
