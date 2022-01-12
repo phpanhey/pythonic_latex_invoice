@@ -1,5 +1,102 @@
+import argparse
+import json
+import os
+import uuid
+import shutil
+import os.path
+from datetime import date
+from datetime import timedelta
+
+
 def main():
-    print("Hello World!")
+    config = get_config()
+    init(config)
+    populated_latex_src = populate_latex_src(config)
+    populated_latex_file_name = create_populated_latex_file(populated_latex_src, config)
+    compile_populated_latex_file(populated_latex_file_name)
+    clean_up(populated_latex_file_name)
+    shutil.move(config["output_file_name"] + ".pdf", "../")
+
+
+def get_config():
+    config_file_name = parse_args()["config"]
+    with open(config_file_name) as config_file:
+        return json.load(config_file)
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", default="config.json")
+    return vars(parser.parse_args())
+
+
+def init(config):
+    file = config["output_file_name"] + ".pdf"
+    os.path.isfile(file)
+    if os.path.isfile(file):
+        os.system(f"rm {file}")
+
+
+def populate_latex_src(config):
+    with open("src/src.tex", "r") as file:
+        content = file.read()
+    content = (
+        content.replace("#bank_details#", config["bank_details"])
+        .replace("#homepage#", config["homepage"])
+        .replace("#my_name#", get_my_name(config))
+        .replace("#email#", config["email"])
+        .replace("#phone#", config["phone"])
+        .replace("#address#", make_latex_string(config["address"]))
+        .replace("#client_name#", get_client_name(config))        
+        .replace("#client_address#", make_latex_string(config["client_address"]))        
+        .replace("#letter_opening#", config["letter_opening"])
+        .replace("#letter_closing#", config["letter_closing"])
+        .replace("#id#", str(uuid.uuid4())[:4])
+        .replace("#due_date#", get_due_date())
+        .replace("#current_date#", date.today().strftime("%d.%m.%Y"))
+    )
+    return content
+
+
+def get_client_name(config):
+    return config["client_address"][0]
+
+
+def get_my_name(config):
+    return config["address"][0]
+
+
+def get_due_date():
+    return (date.today() + timedelta(days=14)).strftime("%d.%m.%Y")
+
+
+def make_latex_string(arr):
+    res = ""
+    for item in arr:
+        res += f"{item}\\\\"
+    return res
+
+
+def create_populated_latex_file(content, config):
+    file_name = config["output_file_name"] + ".tex"
+    with open("src/" + file_name, "w") as the_file:
+        the_file.write(content)
+
+    return file_name
+
+
+def compile_populated_latex_file(filename):
+    os.chdir("src")
+    os.system(f"xelatex {filename}")
+    os.system(f"xelatex {filename}")
+
+
+def clean_up(populated_latex_file_name):
+    os.system("rm *.aux")
+    os.system("rm *.log")
+    os.system("rm *.out")
+    os.system(f"rm {populated_latex_file_name}")
+
 
 if __name__ == "__main__":
     main()
