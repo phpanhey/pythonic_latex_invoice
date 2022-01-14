@@ -49,13 +49,14 @@ def populate_latex_src(config):
         .replace("#address#", make_latex_string(config["address"]))
         .replace("#client_name#", get_client_name(config["client_address"]))
         .replace("#client_address#", make_latex_string(config["client_address"]))
-        .replace("#letter_opening#", config["letter_opening"])
-        .replace("#letter_closing#", config["letter_closing"])
         .replace("#id#", str(uuid.uuid4())[:4])
         .replace("#due_date#", get_due_date())
         .replace("#current_date#", date.today().strftime("%d.%m.%Y"))
         .replace("#work_realized#", get_work_realized(config["work_realized"]))
         .replace("#payment_sum#", calculate_sum(config["work_realized"]))
+        .replace("#custom_text#", config["custom_text"])
+        .replace("#footer#", get_footer(config))
+        .replace("#bank_details#", config["bank_details"])
     )
     return content
 
@@ -87,7 +88,7 @@ def get_work_realized(work_realized):
         res += f"{description}& {payment} €\\\\"
     res += "~&~\\\\"
     sum = calculate_sum(work_realized)
-    res += f"SUMME & \\textbf{sum} €\\\\"
+    res += f"SUMME & \\textbf{sum} €"
     return res
 
 
@@ -96,6 +97,14 @@ def calculate_sum(work_realized):
     for item in work_realized:
         sum += int(item["payment"])
     return str(sum)
+
+
+def get_footer(config):
+    res = ""
+    for item in config["address"]:
+        res += item + " | "
+    res+=config["tax_id"]
+    return res
 
 
 def create_populated_latex_file(content, config):
