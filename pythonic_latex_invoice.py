@@ -20,14 +20,21 @@ def main():
 
 def get_config():
     config_file_name = parse_args()["config"]
+    config = {}
     with open(config_file_name) as config_file:
-        return json.load(config_file)
+        config = json.load(config_file)
+    config["output_file_name"] = get_output_file_name(config_file_name)
+    return config
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="config.json")
     return vars(parser.parse_args())
+
+
+def get_output_file_name(config_file_name):
+    return config_file_name.replace("json", "").replace(".", "")
 
 
 def init(config):
@@ -103,7 +110,7 @@ def get_footer(config):
     res = ""
     for item in config["address"]:
         res += item + " | "
-    res+=config["tax_id"]
+    res += config["tax_id"]
     return res
 
 
