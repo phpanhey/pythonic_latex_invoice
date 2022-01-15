@@ -95,7 +95,7 @@ def get_work_realized(work_realized):
         res += f"{description}& {payment} €\\\\"
     res += "~&~\\\\"
     sum = calculate_sum(work_realized)
-    res += f"SUMME & \\textbf{sum} €"
+    res += f"\\textbf{{SUMME}} & \\textbf{{{sum}}} €"
     return res
 
 
