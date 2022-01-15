@@ -49,7 +49,6 @@ def populate_latex_src(config):
         content = file.read()
     content = (
         content.replace("#bank_details#", config["bank_details"])
-        .replace("#homepage#", config["homepage"])
         .replace("#my_name#", get_my_name(config["address"]))
         .replace("#email#", config["email"])
         .replace("#phone#", config["phone"])
@@ -110,7 +109,8 @@ def get_footer(config):
     res = ""
     for item in config["address"]:
         res += item + " | "
-    res += config["tax_id"]
+    res += config["tax_id"] + " | "
+    res += config["homepage"]
     return res
 
 
