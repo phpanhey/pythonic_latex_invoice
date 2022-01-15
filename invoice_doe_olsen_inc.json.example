@@ -1,0 +1,25 @@
+{
+  "email": "hola@john-doe.com",
+  "phone": "+4912334556",
+  "homepage": "john-doe.com",
+  "address": ["John Doe", "123 Main St", "Anytown, Germany"],
+  "client_address": [
+    "Olsen Inc.",
+    "Kyla Olsen",
+    "Ap 651-8679 Sodales Av.",
+    "Tamuning PA 10855"
+  ],
+  "bank_details": "IBAN DE63500105172278318183",
+  "tax_id": "id: 001-78-8009",
+  "work_realized": [
+    {
+      "description": "debugging, fault tracing",
+      "payment": "980"
+    },
+    {
+      "description": "troubleshooting, api adjustment",
+      "payment": "1287"
+    }
+  ],
+  "custom_text": "Dear Kyla Olsen,\\newline \\newline Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. "
+}
