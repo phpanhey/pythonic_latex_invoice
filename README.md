@@ -16,5 +16,8 @@ will compile to this invoice_doe_olsen_inc.pdf:
 ## dependencies
 commandline `pdflatex` is required.
 
+## language adjustments
+language adjustments can be done direcly in a fork of this repository.
+
 ## thanks to mkropat
 thanks for mkropat for his invoice template, that can be found here: [mkropat invoice](https://github.com/mkropat/dapper-invoice)
