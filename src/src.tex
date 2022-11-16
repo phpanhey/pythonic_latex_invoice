@@ -1,0 +1,59 @@
+% \documentclass[letterpaper]{dapper-invoice}
+%\documentclass[letterpaper,currency=dollar]{dapper-invoice}
+\documentclass[letterpaper,currency=euro]{dapper-invoice}
+%\documentclass[letterpaper,currency=pound]{dapper-invoice}
+
+\usepackage{graphicx}
+\graphicspath{ {./img/} }
+\usepackage{float}
+\usepackage{fancyhdr}
+
+
+\newcommand{\duein}{15}% days
+
+\newcommand{\clientName}{Sample~Client}
+
+\defaultfontfeatures{ Path = ./Fonts/ }
+\usepackage{fontawesome}
+
+\begin{document}
+
+\newfontface\mainLightItalic{OpenSans-LightItalic}
+\makeheader{\includegraphics{logo.pdf}}{#id#}{#current_date#}
+
+\twocolumnlayout{
+    \begin{infoSection}
+        \infoBox{}{#client_address#}
+        \infoBox{}{\textbf{\##id#}}
+        \noalign{\addvspace{8ex}}
+        \infoBox{}{
+            {\large\raisebox{.55\height}\currencysym\huge\textbf{#payment_sum#} \arrowbase} \\
+            {\small\color{subduedColor} bezahlen bis: #due_date#}
+        }
+    \end{infoSection}
+}{
+    \begin{infoSection}
+        \infoBox{\arrowtarget}{\textbf{#bank_details#}}
+        \infoSub{}{#address#}
+        \infoSub{\faMobilePhone}{\small\slshape #phone#}
+        \infoSub{\tiny\faEnvelope}{\small\slshape \emaillink{#email#}}
+    \end{infoSection}
+}
+
+\drawarrow
+
+\addvspace{4ex}
+
+#custom_text#
+\vspace*{20mm}
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lr}
+        \textbf{Beschreibung} & \textbf{Honorar} \\ \hline
+        #work_realized#
+        \end{tabular}
+\end{table}
+\cfoot{\scriptsize{#footer#}}
+\end{document}
